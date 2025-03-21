@@ -1,7 +1,7 @@
 
 services:
   mbsync:
-    image: lenidh/mbsync-pull
+    image: lenidh/mbsync-pull:main
     container_name: pull-janesmails
     volumes:
       - ./data:/var/lib/mbsync

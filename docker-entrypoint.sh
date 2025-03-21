@@ -5,8 +5,12 @@ _main() {
 
     mkdir -p $MBS_DATA
 
-    mbsync --version
-    mbsync --verbose --all --config /etc/mbsync/mbsyncrc
+    if [ -z "${CRON}" ]; then
+        run-mbsync.sh
+    else
+        docker_setup_cron
+        cron -f
+    fi
 }
 
 docker_setup_conf() {
@@ -24,10 +28,15 @@ docker_setup_conf() {
     docker_substitude_conf_var MBS_PATTERN
 }
 
+docker_setup_cron() {
+    local cron_time=$(echo "${CRON}" | sed -e 's/\s\+/ /g' | cut -d ' ' -f1-5)
+    echo "${cron_time} root su $(whoami) -c 'run-mbsync.sh' >/proc/1/fd/1 2>/proc/1/fd/2" > /etc/cron.d/mbsync
+}
+
 docker_substitude_conf_var() {
     local name=$1
     local value=$(echo "${!name}" | sed 's|/|\\\/|g')
-    if [ -z ${value} ]; then
+    if [ -z "${value}" ]; then
         # Remove configuration directives containing the missing variable
         sed -i "/{$name}/d" /etc/mbsync/mbsyncrc
     else
