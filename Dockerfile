@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cron \
     isync \
     openssl \
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 COPY mbsyncrc /etc/mbsync/mbsyncrc
