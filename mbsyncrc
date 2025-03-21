@@ -1,0 +1,39 @@
+# NOTE: The entrypoint script will replace values in {} with the value of an
+#       indentically named environment variables. If an environment variable is
+#       missing, the corresponding line will be deleted.
+#       Adding new variables will also require the entrypoint script to be
+#       adjusted.
+
+# IMAP account
+IMAPAccount {MBS_MAILBOX_NAME}
+Host {MBS_HOST}
+Port {MBS_PORT}
+User {MBS_USER}
+Pass {MBS_PASSWORD}
+PassCmd "cat '{MBS_PASSWORD_FILE}'"
+SSLType {MBS_TLSTYPE}
+SSLVersions {MBS_TLSVERSIONS}
+PipelineDepth {MBS_PIPELINE_DEPTH}
+
+# Remote storage
+IMAPStore {MBS_MAILBOX_NAME}-remote
+Account {MBS_MAILBOX_NAME}
+UseNamespace yes
+
+# Local storage
+MaildirStore {MBS_MAILBOX_NAME}-local
+Path {MBS_DATA}/
+Inbox {MBS_DATA}/INBOX/
+SubFolders Verbatim
+
+# Connection between remote and local storage
+Channel {MBS_MAILBOX_NAME}
+Far :{MBS_MAILBOX_NAME}-remote:
+Near :{MBS_MAILBOX_NAME}-local:
+Patterns {MBS_PATTERN}
+Expunge None
+Remove None
+CopyArrivalDate yes
+Sync PullNew
+Create Near
+SyncState *

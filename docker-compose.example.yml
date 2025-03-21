@@ -1,0 +1,20 @@
+
+services:
+  mbsync:
+    image: lenidh/mbsync-pull
+    container_name: pull-janesmails
+    volumes:
+      - ./data:/var/lib/mbsync
+    environment:
+      - MBS_MAILBOX_NAME=janesmails # will default to 'default'
+      - MBS_HOST=imap.example.org
+      - MBS_USER=jane@example.org
+      - MBS_PASSWORD_FILE=/run/secrets/imap_password
+      - MBS_TLSTYPE=STARTTLS
+      - MBS_PATTERN=* !Trash !Spam
+    secrets:
+      - imap_password
+
+secrets:
+  imap_password:
+    file: ./imap_password.txt
