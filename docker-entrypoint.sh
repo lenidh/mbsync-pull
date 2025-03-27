@@ -30,7 +30,7 @@ docker_setup_conf() {
 
 docker_setup_cron() {
     local cron_time=$(echo "${CRON}" | sed -e 's/\s\+/ /g' | cut -d ' ' -f1-5)
-    echo "${cron_time} root su $(whoami) -c 'run-mbsync.sh' >/proc/1/fd/1 2>/proc/1/fd/2" > /etc/cron.d/mbsync
+    echo "${cron_time} root export PATH='${PATH}' MBS_UID='${MBS_UID}' MBS_GID='${MBS_GID}'; run-mbsync.sh >/proc/1/fd/1 2>/proc/1/fd/2" > /etc/cron.d/mbsync
 }
 
 docker_substitude_conf_var() {
