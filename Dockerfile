@@ -3,6 +3,8 @@ FROM ubuntu:24.10
 ENV MBS_MAILBOX_NAME default
 ENV MBS_DATA /var/lib/mbsync
 ENV MBS_TLSTYPE IMAPS
+ENV MBS_UID 1000
+ENV MBS_GID 1000
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
