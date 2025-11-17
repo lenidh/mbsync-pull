@@ -1,4 +1,4 @@
-FROM ubuntu:25.10
+FROM ubuntu:26.04
 
 ENV MBS_MAILBOX_NAME default
 ENV MBS_DATA /var/lib/mbsync
